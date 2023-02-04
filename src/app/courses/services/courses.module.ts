@@ -21,15 +21,26 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {RouterModule, Routes} from '@angular/router';
-import { EntityDataService, EntityDefinitionService, EntityMetadataMap} from '@ngrx/data';
+import { EntityDataModule, EntityDataService, EntityDefinitionService, EntityMetadataMap} from '@ngrx/data';
 import {compareCourses, Course} from './model/course';
 
 import {compareLessons, Lesson} from './model/lesson';
 import { CoursesDataService } from './services/courses-data.service';
-import { LessonsEntityService } from './services/lessons-entity.service';
-import { CoursesResolver } from './services/courses.resolver';
 import { CoursesEntityService } from './services/courses-entity.service';
+import { CoursesResolver } from './services/courses.resolver';
+import { LessonsEntityService } from './services/lessons-entity.service';
 
+const entityMetadata: EntityMetadataMap = {
+  Course: {
+    sortComparer: compareCourses,
+    entityDispatcherOptions: {
+      optimisticUpdate: true
+    }
+  },
+  Lesson: {
+    sortComparer: compareLessons
+  }
+}
 
 export const coursesRoutes: Routes = [
   {
@@ -47,18 +58,6 @@ export const coursesRoutes: Routes = [
     }
   }
 ];
-
-const entityMetadata: EntityMetadataMap = {
-  Course: {
-    sortComparer: compareCourses,
-    entityDispatcherOptions: {
-      optimisticUpdate: true
-    }
-  },
-  Lesson: {
-    sortComparer: compareLessons
-  }
-}
 
 @NgModule({
   imports: [
